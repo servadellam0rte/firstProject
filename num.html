@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Числа</title>
+    <style>
+        #field td 
+        {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .right
+        {
+            background-color: red;
+        }
+
+        #marker
+        {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="../open_this.html">Назад</a>
+    <p style="text-align: center;">Затраченное время:</p>
+    <p id="marker"></p>
+	<table id="field"></table>
+	<script>
+        let size = 2; // изначальный размер поля - 2*2
+        let n = size ** 2; // максимальное число - размер поля в квадрате
+        let table = document.getElementById('field'); // получение элемента с id = "field"
+        let numMas = []; // массив со всеми числами от 1 до максимального
+        let num = 1; // номер, на который нужно нажать
+        let timeStart = 0; // время начала игры
+        let timeEnd = 0; // время конца уровня
+        let g = 1
+
+        function createTable() // функция создания таблицы
+        {
+            timeStart = Date.now(); // при создании таблицы в переменную записывается текущее время
+            for (let i = 1; i <= n; i++) numMas.push(i); // добавление в массив всех чисел от 1 до максимального
+            for (let i = 0; i < size; i++) // создание строк и ячеек в соответсвии с выбранным размером
+            {
+                let tr = document.createElement('tr');
+                for (let j = 0; j < size; j++)
+                {
+                    let rand = Math.floor(Math.random() * Math.floor(numMas.length)); // случайное число - индекс элемента в массиве
+                    let td = document.createElement('td');
+                    td.addEventListener("click", step); // добавление использования функции step при нажатии на ячейку
+                    td.innerText = numMas[rand]; // добавление в ячейку числа из массива
+                    numMas.splice(rand, 1); // удаление добавленного числа из массива
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+        }
+
+        function step() // функция при нажатии на ячейку
+        {
+            if (this.textContent == num) // если число в ячейке - то, на которое нужно было нажать
+            {
+                this.classList.add("right"); // добавление к ячейке класса right с заменой ее фона
+                if (num == n) // если число, на которое нужно нажать - максимальное
+                {
+                    size += 1; // увеличение размера таблицы
+                    n = size ** 2; // перерасчет максимального числа
+                    num = 1; // нажать нужно на 1
+                    timeEnd = Date.now(); // при нажатии на последнее число в переменнную записывается текущее время
+                    let t = timeEnd - timeStart; // расчет затраченного времени
+                    let ms = t%1000; t-=ms; ms=Math.floor(ms/10);
+                    t = Math.floor (t/1000);
+                    let s = t%60; t-=s;
+                    t = Math.floor (t/60);
+                    let m = t%60; t-=m;
+                    t = Math.floor (t/60);
+                    let h = t%60;
+                    if (h<10) h='0'+h;
+                    if (m<10) m='0'+m;
+                    if (s<10) s='0'+s;
+                    if (ms<10) ms='0'+ms;
+                    // вывод затраченного времени на экран
+                    document.getElementById('marker').innerHTML = 
+                    document.getElementById('marker').textContent = "Круг №" + g + ". " + h + ':' + m + ':' + s + '.' + ms + '<br>' + document.getElementById('marker').innerHTML;
+                    while (table.firstChild) table.removeChild(table.firstChild); // удаление всех элементов таблицы
+                    createTable(); // создание таблицы заново
+                    g++
+                }
+                else num += 1; // увеличение нужного номера на 1
+            }
+        }
+
+        createTable(); // создание таблицы
+    </script>
+</body>
+</html>

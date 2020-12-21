@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JavaScript</title>
+    <link rel = "stylesheet" href="CSS.css">
+</head>
+<body>
+    <a href="../open_this.html">Назад</a>
+    <table id = "field">
+    </table>
+    <script>
+        let size = prompt("Введите размер матрицы", 3)                          //Вводим размер матрицы
+        let table = document.getElementById('field')                            //Получаем данные элемента с id field
+        let colors = ['red', 'green', 'blue']                                   //Трехцветный массив
+        let count = 0                                                           //Счётчик ходов
+        let countMin                                                            //Переменная для хранения мин. кол-ва нажатий для победы
+        let allColors = []
+        for (let i = 0; i < size; i++)                                          //Цикл для формирования строк
+        {
+            let tr = document.createElement('tr')                               //Создание строки для таблицы
+            for(let j = 0; j < size; j++)                                       //Цикл для формирования столбцов
+            {
+                let td = document.createElement('td')                           //Создание столбца для таблицы
+                ind = Math.floor(Math.random() * Math.floor(colors.length))     //Получение случайного цвета из массива colors
+                allColors.push(ind)                                             //Добавление цветов в итоговый массив
+                td.classList.add(colors[ind])                                   //Добавление класса с названием цвета для ячейки
+                td.addEventListener("click", step)                              //При нажатии на ячейку начинает работать функция step
+                tr.appendChild(td)                                              //Добавление столбца в конец строки таблицы
+            }
+            table.appendChild(tr)                                               //Добавление строки в конец таблицы
+        }
+        if (size===null){                                                       //Проверка на нажатие кнопки отмена в prompt и пр
+            alert("Это неккоректное значение для размера матрицы")
+            location.reload()
+        }
+        stepsRed = 0                                                            //Счётчик количества нажатий для получения матрицы с красными ячейками
+        stepsGreen = 0                                                          //Счётчик количества нажатий для получения матрицы с зелёными ячейками
+        stepsBlue = 0                                                           //Счётчик количества нажатий для получения матрицы с синими ячейками
+        for(let i = 0; i < allColors.length; i++)                               //Перебор всех цветов готовой матрицы
+        {
+            if(allColors[i] == 0)                                               //Если цвет красный то для получения...
+            {
+                stepsGreen += 1                                                 //Зелёного нужно одно нажатие
+                stepsBlue += 2                                                  //Синего нужно два нажатия
+            }
+            else if(allColors[i] == 1)                                          //Иначе если цвет зелёный то для получения...
+            {
+                stepsRed += 2                                                   //Красного нужно два нажатия
+                stepsBlue += 1                                                  //Синего нужно одно нажатие
+            }
+            else                                                                //Иначе если цвет синий то для получения...
+            {
+                stepsRed += 1                                                   //Красного нужно одно нажатие
+                stepsGreen += 2                                                 //Зелёного нужно два нажатия
+            }
+        }
+        countMin = Math.min(stepsRed, stepsGreen, stepsBlue)                    //Определение минимально возмножного количества ходов для победы
+        
+        function step()                                                         //При нажатии на ячейку
+        {
+            count += 1                                                          //Количество шагов увеличисвается на 1
+            let color = colors.indexOf(this.classList.item(0))                  //Получения класса ячейки, на которую нажали
+            color += 1                                                          //Берём следующий цвет
+            if(color >= colors.length)                                          //Если следующий цвет больше или равен количеству всех доступных цветов
+            {
+                color = 0                                                       //Берём первый цвет
+            }
+            this.classList = colors[color]                                      //Присваиваем ячейке на которую нажали следующий цвет
+            if(isVictory(cells))                                                //Если игра завершена то...
+            {
+                alert('Количество шагов: '+ count + '\n' +                      //Выводим количество шагов и наименьшее количество шагов для победы
+                'Наименьшее количество шагов: ' + countMin);
+                location.reload()
+            }
+        }
+        
+        function isVictory(cells)                                               //Функция победы которая принимает все параметры из всех ячеек матрицы
+        {
+            cellsColor = []                                                     //Создание массива с цветами всех ячеек
+            for(let cell of cells)                                              //Перебор всех ячеек в матрицы
+            {
+                cellsColor.push(cell.classList.item(0))                         //Добавляем цвет ячейки с классом цвета
+                for(let i = 0; i < cellsColor.length; i++)                      //Перебор всех цветов 
+                {
+                    while(cellsColor[i] != cellsColor[0])                       //Пока все цвета в матрице не одинаковые...
+                    {
+                        return false                                            //Возвращаем false
+                    }
+                }
+            }
+            return true                                                         //Возвращаем true
+        }
+
+        let cells = document.querySelectorAll('td')                             // Информация о всех ячейках матрицы
+    </script>
+</body>
+</html>
+</script>
+</body>
+
+</html> 
