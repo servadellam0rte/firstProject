@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Задача Эйлера №4</title>
+    </head>
+<body>
+    <script>
+        let list = [];
+        let sol = 9009; // Самый большой двухзначный палиндром
+        let n, i, j;
+        
+        
+        for (i = 999; i > 99; i--) { // > 99 потому что нам не нужно проверять двухзначные числа
+        for (j = i; j > 99; j--) {
+        list.push(i * j);
+        }
+        }
+        list.sort(function (a, b) {
+        return a - b;
+        });
+        
+        // Проверка отсортированного списка для самого большого палиндрома
+        for (i = list.length; i--;) {
+        n = list[i];
+        if (n - String.prototype.split.call(n, "").reverse().join('') === 0) {
+        sol = n;
+        break;
+        }
+        }
+        
+        console.log(sol);
+        
+        </script>
+</body>
+</html>

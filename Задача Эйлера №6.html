@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Задача Эйлера №6</title>
+    </head>
+<body>
+    <script>
+        let test = 100;
+        let sum = 0;
+        let square = 0;
+        let i;
+        
+        for (i = 1; i <= test; i++) { //Перебор чисел от 1 до 100
+        sum += i * i; //Возводим числа во вторую степень
+        square += i; //сумма всех чисел
+        }
+        square *= square; // возведение в квардат суммы
+        
+        console.log(square - sum); // высчитываем разность между square и sumOfSquares и выводим результат
+        </script>
+</body>
+</html>

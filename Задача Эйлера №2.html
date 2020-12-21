@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Задача Эйлера №2</title>
+    </head>
+<body>
+    <script>
+        let prev = 0; //первое число
+        let cur = 1; //следующее число
+        let result = 0;
+        let tep;
+        
+        while (cur < 4e6) { //Цикл будет работать пока cur меньше 4 миллионов(4e6 это 4 миллиона, в данном случае 6 это нули, а 4 число до нулей)
+        if (cur % 2 === 0) result += cur; // если число кратно двум,(четное) то прибавляем число к результату
+        tep = cur; //Записываем cur в tep
+        cur = cur + prev; // получение следующего числа фибоначи и записывание его в cur
+        prev = tep; //prev записываем в temp
+        }
+        
+        console.log(result);
+        
+        </script>
+</body>
+</html>
